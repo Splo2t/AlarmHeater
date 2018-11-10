@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -288,15 +289,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     class outThread extends Thread{
-        String output = "";
+        String output;
         outThread(String input){
             output = input;
         }
 
         public void run(){
             if(socket.isConnected()){
-                out.print(output);
-                out.flush();
+                    out.write(output);
+                    out.flush();
             }
 
         }
@@ -314,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                while(true){
+
                     socket = new Socket(hostIP, port); //소켓생성
                     if(socket.isConnected() && ! socket.isClosed()){
                         thisActivity.runOnUiThread(new Runnable() {
@@ -326,8 +327,9 @@ public class MainActivity extends AppCompatActivity {
 
                         outputStream = new ObjectOutputStream(socket.getOutputStream());
                         out = new PrintWriter(outputStream);//전송한다.
+
                         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                        break;
+
                     }
                     else{
                         thisActivity.runOnUiThread(new Runnable() {
@@ -338,7 +340,7 @@ public class MainActivity extends AppCompatActivity {
                         });
 
                     }
-                } //데이터 수신시 stream을 받아들인다.
+                 //데이터 수신시 stream을 받아들인다.
             } catch (IOException e) {
 
                 e.printStackTrace();
@@ -396,7 +398,7 @@ public class MainActivity extends AppCompatActivity {
             mDbOpenHelper.open();
             mDbOpenHelper.insertColumn("ID"+setTimeTextView.getText().toString(), setTimeTextView.getText().toString(), checkedDay());
             showDatabase(sort);
-            outThread outT = new outThread(setTimeTextView.getText() + "#" + checkedDay()+"a#");
+            outThread outT = new outThread(setTimeTextView.getText() + "#" + checkedDay()+"a");
             outT.start();
         }
     };

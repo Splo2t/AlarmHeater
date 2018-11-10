@@ -199,11 +199,12 @@
         android:layout_marginEnd="30dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="3dp"
+        android:focusableInTouchMode="false"
         android:ems="10"
         android:hint="Port"
+
         android:inputType="number"
         android:text="4824"
-
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ssidEditText"
