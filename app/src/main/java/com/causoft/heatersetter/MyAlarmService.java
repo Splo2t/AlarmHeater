@@ -11,7 +11,6 @@ public class MyAlarmService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flag, int startId){
-
         Toast.makeText(this, "알람이 울립니다.", Toast.LENGTH_LONG).show();
         return START_NOT_STICKY;
     }

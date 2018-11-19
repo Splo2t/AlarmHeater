@@ -7,9 +7,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class DbOpenHelper {
+public class SettingDbOpenHelper {
 
-    private static final String DATABASE_NAME = "InnerDatabase(SQLite).db";
+    private static final String DATABASE_NAME = "settingDatabase(SQLite).db";
     private static final int DATABASE_VERSION = 1;
     public static SQLiteDatabase mDB;
     private DatabaseHelper mDBHelper;
@@ -33,13 +33,14 @@ public class DbOpenHelper {
         }
     }
 
-    public DbOpenHelper(Context context){
+    public SettingDbOpenHelper(Context context){
         this.mCtx = context;
     }
 
-    public DbOpenHelper open() throws SQLException {
+    public SettingDbOpenHelper open() throws SQLException {
         mDBHelper = new DatabaseHelper(mCtx, DATABASE_NAME, null, DATABASE_VERSION);
         mDB = mDBHelper.getWritableDatabase();
+        insertColumn("ID0", "");
         return this;
     }
 
@@ -50,23 +51,19 @@ public class DbOpenHelper {
     public void close(){
         mDB.close();
     }
-    public long insertColumn(String userid, String time, String repeat){
-
+    public long insertColumn(String userid, String ip){
         ContentValues values = new ContentValues();
         values.put(AlarmDatabase.CreateDB.USERID, userid);
-        values.put(AlarmDatabase.CreateDB.TIME, time);
-        values.put(AlarmDatabase.CreateDB.REPEAT,repeat);
         return mDB.insert(AlarmDatabase.CreateDB._TABLENAME0, null, values);
     }
 
 
 
     // Update DB
-    public boolean updateColumn(long id, String userid, String time, String repeat){
+    public boolean updateColumn(long id, String userid, String ip){
         ContentValues values = new ContentValues();
         values.put(AlarmDatabase.CreateDB.USERID, userid);
-        values.put(AlarmDatabase.CreateDB.TIME, time);
-        values.put(AlarmDatabase.CreateDB.REPEAT, repeat);
+        values.put(AlarmDatabase.CreateDB.TIME, ip);
         return mDB.update(AlarmDatabase.CreateDB._TABLENAME0, values, "_id=" + id, null) > 0;
     }
 
@@ -85,10 +82,11 @@ public class DbOpenHelper {
     }
 
     // sort by column
-    public Cursor sortColumn(String sort){
-        Cursor c = mDB.rawQuery( "SELECT * FROM usertable ORDER BY " + sort + ";", null);
+    public Cursor getSetting(){
+        Cursor c = mDB.rawQuery( "SELECT * FROM settingtable;", null);
         return c;
     }
+
 
 
 }
